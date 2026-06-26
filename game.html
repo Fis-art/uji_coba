@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Ball Catcher Game</title>
+    <style>
+        /* Base page layout */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Container for the game canvas area */
+        #game-container {
+            position: relative;
+            width: 500px;
+            height: 400px;
+            background-color: #ffffff;
+            border: 3px solid #333;
+            border-radius: 8px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        /* The target ball */
+        #ball {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #ff4757;
+            border-radius: 50%;
+            cursor: pointer;
+            top: 180px;
+            left: 230px;
+            transition: top 0.2s ease, left 0.2s ease;
+        }
+
+        /* Score tracking display */
+        #score-board {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2f3542;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Catch the Ball!</h1>
+    <div id="score-board">Score: <span id="score">0</span></div>
+
+    <!-- Game Arena -->
+    <div id="game-container">
+        <div id="ball"></div>
+    </div>
+
+    <script>
+        // Track game variables
+        let score = 0;
+        const ball = document.getElementById('ball');
+        const scoreDisplay = document.getElementById('score');
+        const container = document.getElementById('game-container');
+
+        // Calculate secure dimensions to keep ball inside the boundary box
+        const maxLeft = container.clientWidth - 40; 
+        const maxTop = container.clientHeight - 40;
+
+        // Function to teleport ball to a new random position
+        function moveBall() {
+            const randomLeft = Math.floor(Math.random() * maxLeft);
+            const randomTop = Math.floor(Math.random() * maxTop);
+            
+            ball.style.left = randomLeft + 'px';
+            ball.style.top = randomTop + 'px';
+        }
+
+        // Add event listener for successful user clicks
+        ball.addEventListener('click', () => {
+            score++;
+            scoreDisplay.textContent = score;
+            moveBall(); // Instantly move ball upon successful click
+            
+            // Clear and restart the automatic movement timer
+            clearInterval(gameInterval);
+            gameInterval = setInterval(moveBall, 1000);
+        });
+
+        // Set up interval to automatically move ball every 1 second (1000ms)
+        let gameInterval = setInterval(moveBall, 1000);
+    </script>
+
+</body>
+</html>
